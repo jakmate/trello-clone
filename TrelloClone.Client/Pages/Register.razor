@@ -4,6 +4,7 @@
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
+@implements IDisposable
 
 <PageTitle>Register - TrelloClone</PageTitle>
 
@@ -161,7 +162,11 @@
     {
         registerRequest.UserName = e.Value?.ToString() ?? string.Empty;
         
-        _usernameValidationCts?.Cancel();
+        if (_usernameValidationCts is not null)
+        {
+            await _usernameValidationCts.CancelAsync();
+            _usernameValidationCts.Dispose();
+        }
         _usernameValidationCts = new CancellationTokenSource();
 
         if (string.IsNullOrWhiteSpace(registerRequest.UserName))
@@ -185,7 +190,7 @@
         {
             await Task.Delay(500, _usernameValidationCts.Token);
             var response = await AuthService.CheckUsernameAvailabilityAsync(registerRequest.UserName);
-            usernameValidationMessage = response.IsAvailable ? string.Empty : "Username already taken";
+            usernameValidationMessage = response.IsAvailable ? "Username is yours" : "Username already taken";
         }
         catch (TaskCanceledException) { }
         catch { }
@@ -200,7 +205,12 @@
     {
         registerRequest.Email = e.Value?.ToString() ?? string.Empty;
         
-        _emailValidationCts?.Cancel();
+        if (_emailValidationCts is not null)
+        {
+            await _emailValidationCts.CancelAsync();
+            _emailValidationCts.Dispose();
+        }
+
         _emailValidationCts = new CancellationTokenSource();
 
         if (string.IsNullOrWhiteSpace(registerRequest.Email))
@@ -278,12 +288,12 @@
         return true;
     }
 
-    private bool HasLetter(string password) => password.Any(char.IsLetter);
-    private bool HasNumber(string password) => password.Any(char.IsDigit);
+    private static bool HasLetter(string password) => password.Any(char.IsLetter);
+    private static bool HasNumber(string password) => password.Any(char.IsDigit);
     private bool IsPasswordStrong(string password) =>
         password.Length >= 6 && HasLetter(password) && HasNumber(password);
 
-    private string GetValidationClass(string validationMessage)
+    private static string GetValidationClass(string validationMessage)
     {
         if (string.IsNullOrEmpty(validationMessage)) return string.Empty;
         return "is-invalid";
@@ -348,6 +358,10 @@
     public void Dispose()
     {
         _usernameValidationCts?.Cancel();
+        _usernameValidationCts?.Dispose();
+        _usernameValidationCts = null;
         _emailValidationCts?.Cancel();
+        _emailValidationCts?.Dispose();
+        _emailValidationCts = null;
     }
 }

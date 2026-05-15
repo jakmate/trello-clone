@@ -2,6 +2,7 @@
 @using TrelloClone.Client.Components.Modals
 @inject IAuthService AuthService
 @inject IJSRuntime JSRuntime
+@implements IDisposable
 
 <div class="profile-section p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -131,7 +132,11 @@
     {
         updateUserRequest.UserName = e.Value?.ToString() ?? string.Empty;
         
-        _usernameValidationCts?.Cancel();
+        if (_usernameValidationCts is not null)
+        {
+            await _usernameValidationCts.CancelAsync();
+            _usernameValidationCts.Dispose();
+        }
         _usernameValidationCts = new CancellationTokenSource();
         
         if (updateUserRequest.UserName == CurrentUser?.UserName)
@@ -177,7 +182,11 @@
     {
         updateUserRequest.Email = e.Value?.ToString() ?? string.Empty;
         
-        _emailValidationCts?.Cancel();
+        if (_emailValidationCts is not null)
+        {
+            await _emailValidationCts.CancelAsync();
+            _emailValidationCts.Dispose();
+        }
         _emailValidationCts = new CancellationTokenSource();
         
         if (updateUserRequest.Email == CurrentUser?.Email)
@@ -298,6 +307,10 @@
     public void Dispose()
     {
         _usernameValidationCts?.Cancel();
+        _usernameValidationCts?.Dispose();
+        _usernameValidationCts = null;
         _emailValidationCts?.Cancel();
+        _emailValidationCts?.Dispose();
+        _emailValidationCts = null;
     }
 }
