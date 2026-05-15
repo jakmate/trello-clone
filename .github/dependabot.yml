@@ -1,8 +1,8 @@
 version: 2
 
 updates:
-  # Enable version updates for dotnet
-  - package-ecosystem: "dotnet-sdk"
+  # Enable version updates for nuget
+  - package-ecosystem: "nuget"
     directory: "."
     schedule:
       interval: "weekly"
