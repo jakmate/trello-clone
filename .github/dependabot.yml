@@ -1,0 +1,26 @@
+version: 2
+
+updates:
+  # Enable version updates for dotnet
+  - package-ecosystem: "dotnet-sdk"
+    directory: "."
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase-if-necessary
+
+    open-pull-requests-limit: 5
+
+    commit-message:
+      prefix: "Dependabot"
+  
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/TrelloClone.Client"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase-if-necessary
+
+    open-pull-requests-limit: 5
+
+    commit-message:
+      prefix: "Dependabot"
