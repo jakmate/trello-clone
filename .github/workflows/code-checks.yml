@@ -51,9 +51,9 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
+      - name: Install dependencies (biome)
         run: |
-          npm install @biomejs/biome --save-dev
+          npm ci
 
-      - name: Lint
-        run: npx @biomejs/biome ci
+      - name: Lint & format
+        run: npm run lint
