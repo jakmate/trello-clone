@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dependencies (biome)
         run: |
-          npm ci
+          npm ci --ignore-scripts
 
       - name: Lint & format
         run: npm run lint

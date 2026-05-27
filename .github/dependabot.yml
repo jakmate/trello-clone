@@ -5,7 +5,7 @@ updates:
   - package-ecosystem: "nuget"
     directory: "."
     schedule:
-      interval: "weekly"
+      interval: "monthly"
 
     open-pull-requests-limit: 5
 
@@ -16,7 +16,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/TrelloClone.Client"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     versioning-strategy: increase-if-necessary
 
     open-pull-requests-limit: 5
