@@ -56,4 +56,4 @@ jobs:
           npm ci --ignore-scripts
 
       - name: Lint & format
-        run: npm run lint
+        run: npm run ci

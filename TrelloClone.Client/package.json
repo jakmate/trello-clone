@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "lint": "npx @biomejs/biome ci"
+    "format": "npx @biomejs/biome format --fix",
+    "lint": "npx @biomejs/biome format --fix",
+    "ci": "npx @biomejs/biome ci"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15"
